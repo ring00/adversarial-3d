@@ -29,7 +29,7 @@ flags.DEFINE_string('obj', '3d_model/barrel.obj', '.obj file path')
 flags.DEFINE_string('texture', '3d_model/barrel.jpg', 'texture file path')
 
 flags.DEFINE_float('camera_distance_min', 2.5, 'minimum camera distance')
-flags.DEFINE_float('camera_distance_max', 3,0, 'maximum camera distance')
+flags.DEFINE_float('camera_distance_max', 3.0, 'maximum camera distance')
 
 flags.DEFINE_float('x_translation_min', -0.5, 'minimum translation along x-axis')
 flags.DEFINE_float('x_translation_max', 0.5, 'maximum translation along x-axis')
