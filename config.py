@@ -6,11 +6,12 @@ flags = tf.app.flags
 #    hyper parameters      #
 ############################
 
-flags.DEFINE_integer('batch_size', 4, 'batch size')
-flags.DEFINE_integer('epoch', 50, 'epoch')
-flags.DEFINE_float('learning_rate', 0.001, 'learning rate')
-flags.DEFINE_float('l2_weight', 1.0, 'the weighting factor for l2 loss')
-flags.DEFINE_integer('label', 1, 'the label for adversarial examples')
+flags.DEFINE_integer('batch_size', 12, 'batch size')
+flags.DEFINE_integer('iterations', 10000, 'iterations')
+flags.DEFINE_float('learning_rate', 0.003, 'learning rate')
+flags.DEFINE_float('l2_weight', 0.5, 'the weighting factor for l2 loss')
+flags.DEFINE_integer('target', 1, 'the label for adversarial examples')
+flags.DEFINE_float('max_epsilon', 16.0, 'Maximum size of adversarial perturbation.')
 
 ############################
 #   environment setting    #
@@ -28,8 +29,8 @@ flags.DEFINE_string('model_name', 'inception_v3.ckpt', 'name of checkpoint file'
 flags.DEFINE_string('obj', '3d_model/barrel.obj', '.obj file path')
 flags.DEFINE_string('texture', '3d_model/barrel.jpg', 'texture file path')
 
-flags.DEFINE_float('camera_distance_min', 2.5, 'minimum camera distance')
-flags.DEFINE_float('camera_distance_max', 3.0, 'maximum camera distance')
+flags.DEFINE_float('camera_distance_min', 2.0, 'minimum camera distance')
+flags.DEFINE_float('camera_distance_max', 2.5, 'maximum camera distance')
 
 flags.DEFINE_float('x_translation_min', -0.5, 'minimum translation along x-axis')
 flags.DEFINE_float('x_translation_max', 0.5, 'maximum translation along x-axis')
@@ -41,8 +42,8 @@ flags.DEFINE_float('y_translation_max', 0.5, 'maximum translation along y-axis')
 # post-processing setting  #
 ############################
 
-flags.DEFINE_boolean('printing_error', True, 'consider printing error for textures')
-flags.DEFINE_boolean('photography_error', False, 'consider photography error for images')
+flags.DEFINE_boolean('print_error', True, 'consider printing error for textures')
+flags.DEFINE_boolean('photo_error', False, 'consider photography error for images')
 
 flags.DEFINE_float('background_min', 0.1, 'minimum rgb value for background')
 flags.DEFINE_float('background_max', 1.0, 'maximum rgb value for background')

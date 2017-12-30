@@ -4,6 +4,7 @@
 import os
 import sys
 import urllib
+import tarfile
 from config import cfg
 
 def download_and_extract(URL, DIR):

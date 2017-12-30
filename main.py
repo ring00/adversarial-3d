@@ -23,30 +23,31 @@ def main():
         y_translation=(cfg.y_translation_min, cfg.y_translation_max)
     )
 
-    batch_size = cfg.batch_size
-    uv = renderer.render(batch_size) * \
-        np.asarray([width - 1, height - 1], dtype=np.float32)
-
     texture = np.asarray(texture).astype(np.float32)[..., :3] / 255.0
     model = AdversarialNet(texture)
 
     with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
 
         saver = tf.train.Saver(slim.get_model_variables(scope='InceptionV3'))
         saver.restore(sess, os.path.join(cfg.model_dir, cfg.model_name))
 
-        tf.variables_initializer([model.noise]).run()
-
-        summary, loss, indices = sess.run(
-            [model.train_summary, model.loss, model.indices],
-            feed_dict={model.uv_mapping: uv}
-        )
-
-        print('Loss: {}'.format(loss))
-        print('Prediction: {}'.format(indices))
-
+        # tf.variables_initializer([model.noise]).run()
         writer = tf.summary.FileWriter(cfg.logdir)
-        writer.add_summary(summary)
+
+        for i in range(cfg.iterations):
+            uv = renderer.render(cfg.batch_size) * \
+                np.asarray([width - 1, height - 1], dtype=np.float32)
+            summary, loss, indices, diff, _ = sess.run(
+                [model.train_summary, model.loss, model.indices, model.diff, model.update],
+                feed_dict={model.uv_mapping: uv}
+            )
+
+            print('Loss: {}'.format(loss))
+            print('Prediction: {}'.format(indices))
+            print('Diff: {}', diff.sum())
+
+            writer.add_summary(summary, i)
 
 if __name__ == '__main__':
     main()
