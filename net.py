@@ -69,17 +69,18 @@ class AdversarialNet(object):
             std_images = self.transform(std_images, multiplier, addend)
             adv_images = self.transform(adv_images, multiplier, addend)
 
-            gaussian_noise = tf.random_normal(
+            gaussian_noise = tf.truncated_normal(
                 tf.shape(std_images),
-                stddev=tf.random_uniform([1], cfg.stddev)
+                stddev=tf.random_uniform([1], maxval=cfg.stddev)
             )
 
             std_images += gaussian_noise
             adv_images += gaussian_noise
 
         # TODO: clip or scale to [0.0, 1.0]?
-        # in_images = tf.clip_by_value(in_images, 0.0, 1.0)
-        # out_images = tf.clip_by_value(out_images, 0.0, 1.0)
+        # std_images = tf.clip_by_value(std_images, 0, 1)
+        # adv_images = tf.clip_by_value(adv_images, 0, 1)
+        std_images, adv_images = self.normalize(std_images, adv_images)
 
         with slim.arg_scope(inception_v3.inception_v3_arg_scope()):
             scaled_images = 2.0 * adv_images - 1.0
@@ -140,3 +141,13 @@ class AdversarialNet(object):
         inv = tf.logical_not(mask)
 
         return tf.cast(mask, tf.float32) * x + tf.cast(inv, tf.float32) * color
+
+    @staticmethod
+    def normalize(x, y):
+        minimum = tf.minimum(tf.reduce_min(x, axis=[1, 2], keep_dims=True), tf.reduce_min(y, axis=[1, 2, 3], keep_dims=True))
+        maximum = tf.maximum(tf.reduce_max(x, axis=[1, 2], keep_dims=True), tf.reduce_max(y, axis=[1, 2, 3], keep_dims=True))
+
+        minimum = tf.minimum(minimum, 0)
+        maximum = tf.maximum(maximum, 1)
+
+        return (x - minimum) / (maximum - minimum), (y - minimum) / (maximum - minimum)

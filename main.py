@@ -32,7 +32,6 @@ def main():
         saver = tf.train.Saver(slim.get_model_variables(scope='InceptionV3'))
         saver.restore(sess, os.path.join(cfg.model_dir, cfg.model_name))
 
-        # tf.variables_initializer([model.noise]).run()
         writer = tf.summary.FileWriter(cfg.logdir)
 
         for i in range(cfg.iterations):
@@ -44,10 +43,15 @@ def main():
             )
 
             print('Loss: {}'.format(loss))
-            print('Prediction: {}'.format(indices))
-            print('Diff: {}', diff.sum())
+            print('Diff: {}'.format(diff.sum()))
+            print('Prediction:\n{}'.format(indices))
 
             writer.add_summary(summary, i)
+
+            if i % 10 == 0:
+                adv_texture = np.rint(sess.run([model.adv_texture])[0] * 255)
+                adv_texture = Image.fromarray(adv_texture.astype(np.uint8))
+                adv_texture.save('{}/adv_{}.jpg'.format(cfg.image_dir, i))
 
 if __name__ == '__main__':
     main()
