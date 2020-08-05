@@ -4,6 +4,8 @@ A TensorFlow implementation for [Synthesizing Robust Adversarial Examples](https
 
 ## Requirements
 
+You can install the necessary dependencies with `pip install -r requirements.txt`.
+
 * Python
 * NumPy
 * [TensorFlow](https://www.tensorflow.org/) >= 1.3
