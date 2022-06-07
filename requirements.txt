@@ -2,4 +2,4 @@ ModernGL==4.2.2
 ModernGL.ext.obj==1.0.0
 Pillow==9.0.1
 pyrr==0.10.3
-tensorflow==2.6.4
+tensorflow==2.7.2
