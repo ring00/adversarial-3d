@@ -1,6 +1,6 @@
 import os
 import ModernGL
-from ModernGL.ext.obj import Obj
+from objloader import Obj
 from PIL import Image
 from pyrr import Matrix44, Vector3
 import numpy as np
