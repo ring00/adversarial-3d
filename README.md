@@ -10,6 +10,6 @@ You can install the necessary dependencies with `pip install -r requirements.txt
 * NumPy
 * [TensorFlow](https://www.tensorflow.org/) >= 1.3
 * [Pillow](http://pillow.readthedocs.io)
-* [ModernGL](https://moderngl.readthedocs.io)
-	- ModernGL.ext.obj
+* [ModernGL](https://moderngl.readthedocs.io) < 5.0.0
+* [objloader](https://pypi.org/project/objloader/)
 * [pyrr](https://pyrr.readthedocs.org)
